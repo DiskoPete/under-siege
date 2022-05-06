@@ -8,8 +8,9 @@
     <x-ui.panel class="flex justify-between items-center">
         <h1 class="text-3xl font-bold">{{__('Siege #:id', ['id' => $siege->getKey()])}}</h1>
 
-        <div>
-            {{__('Status: :status', ['status' => $siege->status->name])}}
+        <div class="flex items-center gap-2">
+            {{$siege->status->name}}
+            <x-dynamic-component class="w-6 aspect-square" :component="$siege->status->getIconComponent()" />
         </div>
 
     </x-ui.panel>
@@ -59,9 +60,18 @@
                 <div class="grow flex items-center justify-center">
 
                     @if($siege->status == \App\Enums\SiegeStatus::InProgress)
-                        <div x-data="countdown({{$siege->configuration->duration}})">
-                            <span x-text="timeLeft"></span> Seconds
+
+                        <div class="flex flex-col items-center space-y-4">
+                            <div>
+                                <x-dynamic-component :component="$siege->status->getIconComponent()" class="fill-secondary-500 w-14 aspect-square animate-spin" />
+                            </div>
+
+                            <div x-data="countdown({{$siege->configuration->duration}})">
+                                About <span x-text="timeLeft"></span> seconds left
+                            </div>
                         </div>
+
+
                     @else
                         {{__('Pending')}}
                     @endif

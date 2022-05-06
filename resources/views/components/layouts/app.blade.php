@@ -13,16 +13,21 @@
 <body class="antialiased bg-gray-100 h-screen">
 
     <div class="flex flex-col min-h-screen">
-        <header class="text-secondary-500 bg-white border-b border-b-gray-100 shadow-sm">
-            <div class="
+
+        <header class="
+            text-secondary-500 bg-white border-b border-b-gray-100 shadow-sm
             px-3 md:px-5 py-3
+            flex justify-between items-center
             ">
-                <a href="{{url(\App\Providers\RouteServiceProvider::HOME)}}"
-                   class="font-bold text-2xl"
-                >
-                    {{config('app.name')}}
-                </a>
-            </div>
+            <a href="{{url(\App\Providers\RouteServiceProvider::HOME)}}"
+               class="font-bold text-2xl"
+            >
+                {{config('app.name')}}
+            </a>
+
+            <a href="https://github.com/DiskoPete/under-siege">
+                <x-fab-github class="w-8 aspect-square fill-black" />
+            </a>
 
         </header>
 
@@ -30,7 +35,7 @@
             {{$slot}}
         </main>
 
-        <footer class="max-w-screen-xl mx-auto p-2 text-sm w-full mt-auto flex justify-between items-center">
+        <footer class="p-2 text-sm w-full mt-auto flex justify-between items-center">
             <div>
                 &copy; {{date('Y')}} Peter Schwab
             </div>
