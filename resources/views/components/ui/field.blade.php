@@ -1,5 +1,5 @@
 <div>
-    <label class="block">
+    <label class="block font-bold mb-2 text-dark-500">
         {{$label}}
     </label>
 

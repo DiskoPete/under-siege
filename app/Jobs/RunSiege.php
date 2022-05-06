@@ -20,8 +20,6 @@ class RunSiege implements ShouldQueue
     public $deleteWhenMissingModels = true;
     public $tries = 3;
 
-    public $timeout = 70; // TODO - Sync with max duration setting
-
     public function __construct(
         private readonly Siege $siege
     )
@@ -53,7 +51,7 @@ class RunSiege implements ShouldQueue
 
     private function exec(): Result
     {
-        exec("siege -d4 -c{$this->siege->configuration->concurrent} -t{$this->siege->configuration->duration}S -j " . $this->siege->configuration->target, $output);
+        exec("siege -c{$this->siege->configuration->concurrent} -t{$this->siege->configuration->duration}S -j " . $this->siege->configuration->target, $output);
 
         $json = array_reduce(
             $output,

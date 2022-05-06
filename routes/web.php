@@ -13,13 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn() => view('home'));
 
-Route::get('imprint', function () {
-    return view('imprint');
-})->name('imprint');
+Route::get('imprint', fn() => view('imprint'))->name('imprint');
 
 Route::get('sieges/{siege:uuid}', \App\Http\Controllers\Sieges\ViewController::class)->name('sieges.details');
 Route::post('sieges', \App\Http\Controllers\Sieges\CreateController::class)->name('sieges.create');

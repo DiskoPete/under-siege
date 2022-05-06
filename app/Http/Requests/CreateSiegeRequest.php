@@ -9,9 +9,9 @@ class CreateSiegeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'concurrent' => 'required|max:50',
-            'duration' => 'required|max:60',
-            'target' => 'required|url'
+            'concurrent' => 'required|int|max:' . config('siege.max_concurrent_users'),
+            'duration'   => 'required|int|max:' . config('siege.max_duration'),
+            'target'     => 'required|url'
         ];
     }
 }
