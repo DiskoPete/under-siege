@@ -1,10 +1,16 @@
+@props(['href' => null])
 <?php
 /**
  * @var \Illuminate\View\ComponentAttributeBag $attributes
  */
+$tag = 'button';
+
+if ($href) {
+    $tag = 'a';
+}
 ?>
-<button
-    {{$attributes->merge(['type' => 'submit'])}}
+<<?= $tag ?>
+    {{$attributes->merge()}}
     class="
         inline-block border-2 border-secondary-500
         px-7 py-1
@@ -12,6 +18,7 @@
         rounded-full
         text-lg
     "
+    @if($href)href="{{$href}}"@endif
 >
     {{$slot}}
-</button>
+</<?= $tag ?>>

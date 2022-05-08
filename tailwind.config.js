@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: [
       './resources/views/**/*.blade.php'
@@ -17,6 +19,12 @@ module.exports = {
             dark: {
                 500: '#253031'
             }
+        },
+        fontFamily: {
+            sans: [
+                'Inter',
+                ...defaultTheme.fontFamily.sans
+            ]
         }
     },
   },

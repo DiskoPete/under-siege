@@ -1,10 +1,14 @@
+@props(['siege' => null])
 @php
-$initialDuration = 30;
-$initialConcurrentUsers = 25;
+/**
+ * @var \App\Models\Siege|null $siege
+ */
+$initialDuration = $siege?->configuration->duration ?: 30;
+$initialConcurrentUsers = $siege?->configuration->concurrent ?: 25;
 @endphp
 <form
     method="post" action="{{route('sieges.create')}}"
-      class="space-y-3"
+      class="space-y-4"
 >
     @csrf
 
@@ -13,7 +17,7 @@ $initialConcurrentUsers = 25;
             Url
         @endslot
 
-        <input type="url" name="target" required class="px-3 py-1 border border-gray-200 w-full">
+        <input type="url" name="target" required class="px-3 py-1 border border-gray-200 w-full" value="{{$siege?->configuration->target ?: null }}">
 
     </x-ui.field>
 
@@ -47,8 +51,12 @@ $initialConcurrentUsers = 25;
 
     </x-ui.field>
 
-    <x-ui.button>
-        {{__('Start siege')}}
-    </x-ui.button>
+    <div class="flex justify-end">
+        <x-ui.button type="submit">
+            {{__('Start siege')}}
+        </x-ui.button>
+    </div>
+
+
 
 </form>

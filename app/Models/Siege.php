@@ -24,4 +24,9 @@ class Siege extends Model
         'configuration' => SiegeCaster::class,
         'results'       => SiegeCaster::class,
     ];
+
+    public function isComplete(): bool
+    {
+        return $this->status == SiegeStatus::Complete;
+    }
 }

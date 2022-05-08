@@ -3,7 +3,10 @@
  * @var \App\Models\Siege $siege
  */
 ?>
-<div class="space-y-3">
+<div
+    class="space-y-3"
+    x-data="{showForm: false}"
+>
 
     <x-ui.panel class="flex justify-between items-center">
         <h1 class="text-3xl font-bold">{{__('Siege #:id', ['id' => $siege->getKey()])}}</h1>
@@ -57,7 +60,7 @@
 
                 </div>
             @else
-                <div class="grow flex items-center justify-center">
+                <div class="grow flex flex-col items-center justify-center gap-2">
 
                     @if($siege->status == \App\Enums\SiegeStatus::InProgress)
 
@@ -69,12 +72,18 @@
                             <div x-data="countdown({{$siege->configuration->duration}})">
                                 About <span x-text="timeLeft"></span> seconds left
                             </div>
+
                         </div>
 
 
                     @else
-                        {{__('Pending')}}
+                        <div>
+                            {{__('Pending')}} ...
+                        </div>
                     @endif
+
+                        <p class="text-center">If this tool servers your purpose,<br>please do consider to <a href="{{config('support.buy_me_a_coffee_url')}}" target="_blank" class="text-secondary-500">buy me a coffee</a>! ☕️</p>
+
 
                 </div>
 
@@ -84,7 +93,21 @@
         </x-ui.panel>
     </div>
 
-    <x-ui.panel>Actions</x-ui.panel>
+    <x-ui.panel class="flex justify-between">
+
+        <x-ui.button href="{{config('support.buy_me_a_coffee_url')}}">{{__('Buy me a coffee')}}</x-ui.button>
+
+
+    @if($siege->isComplete())
+            <x-ui.button type="button" @click="showForm = true">{{__('Rerun siege')}}</x-ui.button>
+        @endif
+    </x-ui.panel>
+
+    @if($siege->isComplete())
+        <x-ui.panel x-cloak x-show="showForm">
+            <x-sieges.create-form :siege="$siege" />
+        </x-ui.panel>
+    @endif
 
     <script>
         document.addEventListener('alpine:init', () => {
