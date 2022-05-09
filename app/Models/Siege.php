@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Enums\SiegeStatus;
 use App\Support\Siege\Result;
-use App\Support\SiegeConfiguration;
 use App\Support\SiegeCaster;
+use App\Support\SiegeConfiguration;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,10 +19,12 @@ class Siege extends Model
 {
     use HasFactory;
 
+    const COLUMN_STATUS = 'status';
+
     protected $casts = [
-        'status'        => SiegeStatus::class,
-        'configuration' => SiegeCaster::class,
-        'results'       => SiegeCaster::class,
+        self::COLUMN_STATUS => SiegeStatus::class,
+        'configuration'     => SiegeCaster::class,
+        'results'           => SiegeCaster::class,
     ];
 
     public function isComplete(): bool
