@@ -23,18 +23,5 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
 });
 
-Alpine.data('headerInput', () => ({
-    headers: [],
-    add() {
-        this.headers.push({
-            name: '',
-            value: ''
-        });
-    },
-    onInput(event, index) {
-        this.headers[index].name = encodeURIComponent(event.target.value);
-    }
-}))
-
 window.Alpine = Alpine;
 Alpine.start();

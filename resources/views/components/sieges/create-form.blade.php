@@ -56,19 +56,8 @@ $initialConcurrentUsers = $siege?->configuration->concurrent ?: 25;
             {{__('Request Headers')}}
         @endslot
 
-        <div x-data="headerInput" class="grid grid-cols-2 gap-2 max-w-screen-sm">
+        <x-ui.headers-input :headers="$siege?->configuration->headers" />
 
-            <template x-for="(header, index) in headers">
-                <div class="contents"  :key="index">
-                    <input type="text" class="text-input" x-on:input="onInput($event, index)" required>
-                    <input type="text" x-bind:name="`headers[${header.name}]`" class="text-input">
-                </div>
-
-            </template>
-
-
-            <button type="button" @click="add"><x-fas-plus class="w-5 aspect-square"/></button>
-        </div>
 
     </x-ui.field>
 
