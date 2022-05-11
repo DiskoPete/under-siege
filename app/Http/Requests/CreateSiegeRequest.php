@@ -11,7 +11,8 @@ class CreateSiegeRequest extends FormRequest
         return [
             'concurrent' => 'required|int|max:' . config('siege.max_concurrent_users'),
             'duration'   => 'required|int|max:' . config('siege.max_duration'),
-            'target'     => 'required|url'
+            'target'     => 'required|url',
+            'headers'    => 'array'
         ];
     }
 }

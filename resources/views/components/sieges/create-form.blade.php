@@ -17,7 +17,7 @@ $initialConcurrentUsers = $siege?->configuration->concurrent ?: 25;
             Url
         @endslot
 
-        <input type="url" name="target" required class="px-3 py-1 border border-gray-200 w-full" value="{{$siege?->configuration->target ?: null }}">
+        <input type="url" name="target" required class="text-input" value="{{$siege?->configuration->target ?: null }}">
 
     </x-ui.field>
 
@@ -47,6 +47,27 @@ $initialConcurrentUsers = $siege?->configuration->concurrent ?: 25;
             <div class="flex gap-2" x-cloak>
                 <div><span x-text="value"></span> Users</div>
             </div>
+        </div>
+
+    </x-ui.field>
+
+    <x-ui.field>
+        @slot('label')
+            {{__('Request Headers')}}
+        @endslot
+
+        <div x-data="headerInput" class="grid grid-cols-2 gap-2 max-w-screen-sm">
+
+            <template x-for="(header, index) in headers">
+                <div class="contents"  :key="index">
+                    <input type="text" class="text-input" x-on:input="onInput($event, index)" required>
+                    <input type="text" x-bind:name="`headers[${header.name}]`" class="text-input">
+                </div>
+
+            </template>
+
+
+            <button type="button" @click="add"><x-fas-plus class="w-5 aspect-square"/></button>
         </div>
 
     </x-ui.field>

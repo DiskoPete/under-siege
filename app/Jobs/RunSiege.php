@@ -60,9 +60,26 @@ class RunSiege implements ShouldQueue
         $this->siege->save();
     }
 
+    private function makeHeadersOption(): string|null
+    {
+        $headers = $this->siege->configuration->headers;
+
+        if (!$headers) {
+            return null;
+        }
+
+        return sprintf(
+            '--header="%s"',
+            collect($headers)
+                ->map(fn(string $value, string $name) => "$name: $value")
+                ->join(',')
+        );
+    }
+
     private function exec(): Result
     {
-        $command = "siege --no-parser -i -d5 -c{$this->siege->configuration->concurrent} -t{$this->siege->configuration->duration}S -j --file={$this->filePaths['urls']} --log={$this->filePaths['logs']}";
+        $headers = $this->makeHeadersOption();
+        $command = "siege --no-parser -ij -d5 -c{$this->siege->configuration->concurrent} -t{$this->siege->configuration->duration}S --file={$this->filePaths['urls']} --log={$this->filePaths['logs']} $headers";
 
         exec($command, $output);
 
@@ -72,12 +89,17 @@ class RunSiege implements ShouldQueue
             ''
         );
 
-        return new Result(json_decode($json, true, flags: JSON_THROW_ON_ERROR));
+        try {
+            $attributes = json_decode($json, true, flags: JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new \RuntimeException("Could not parse json: $json", previous: $e);
+        }
+        return new Result($attributes);
     }
 
     private function writeUrlsFile(): void
     {
-        $path        = "sieges/urls/{$this->siege->uuid}.txt";
+        $path = "sieges/urls/{$this->siege->uuid}.txt";
         Storage::disk()->put(
             $path,
             implode("\n", $this->siege->configuration->urls)
@@ -88,7 +110,7 @@ class RunSiege implements ShouldQueue
 
     private function createLogsFile(): void
     {
-        $path = "sieges/logs/" . $this->siege->uuid;
+        $path                    = "sieges/logs/" . $this->siege->uuid;
         $this->filePaths['logs'] = Storage::path($path);
 
     }

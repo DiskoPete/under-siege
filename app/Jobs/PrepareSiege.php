@@ -53,7 +53,8 @@ class PrepareSiege implements ShouldQueue
             $started = true;
 
             Crawler::create([
-                RequestOptions::ALLOW_REDIRECTS => true
+                RequestOptions::ALLOW_REDIRECTS => true,
+                RequestOptions::HEADERS => $this->siege->configuration->headers ?? []
             ])
                 ->setCrawlQueue($crawlQueue)
                 ->setCrawlObserver($observer)
