@@ -38,7 +38,9 @@ class RunSiege implements ShouldQueue
     {
 
         try {
-            $this->updateSiegeStatus(SiegeStatus::InProgress);
+            $this->siege->started_at = now();
+            $this->siege->status = SiegeStatus::InProgress;
+            $this->siege->save();
 
             $this->writeUrlsFile();
             $this->createLogsFile();
@@ -100,9 +102,12 @@ class RunSiege implements ShouldQueue
     private function writeUrlsFile(): void
     {
         $path = "sieges/urls/{$this->siege->uuid}.txt";
+
+        $urls = $this->siege->configuration->urls ?: [$this->siege->configuration->target];
+
         Storage::disk()->put(
             $path,
-            implode("\n", $this->siege->configuration->urls)
+            implode("\n", $urls)
         );
 
         $this->filePaths['urls'] = Storage::path($path);

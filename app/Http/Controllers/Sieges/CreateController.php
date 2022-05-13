@@ -20,7 +20,7 @@ class CreateController extends Controller
     {
         $siege                = new Siege();
         $siege->status        = SiegeStatus::Queued;
-        $siege->configuration = new SiegeConfiguration($request->validated());
+        $siege->configuration = new SiegeConfiguration($request->safe()->all());
         $siege->uuid          = Str::uuid();
         $siege->save();
 

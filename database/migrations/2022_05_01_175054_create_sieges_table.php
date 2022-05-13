@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->json('configuration');
             $table->json('results')->nullable();
             $table->timestamps();
+            $table->dateTime(Siege::COLUMN_STARTED_AT)->nullable();
         });
     }
 

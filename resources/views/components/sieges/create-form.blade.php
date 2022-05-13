@@ -11,13 +11,23 @@ $initialConcurrentUsers = $siege?->configuration->concurrent ?: 25;
       class="space-y-4"
 >
     @csrf
-
     <x-ui.field>
         @slot('label')
-            Url
+        {{__('Url')}}
         @endslot
 
-        <input type="url" name="target" required class="text-input" value="{{$siege?->configuration->target ?: null }}">
+        <div class="space-y-2">
+            <input type="url" name="target" required class="text-input" value="{{$siege?->configuration->target ?: null }}" placeholder="{{__('https://...')}}">
+
+            <label class="block shrink-0">
+                <input type="checkbox" name="crawl" value="1" @checked($siege?->configuration->crawl ?? true) />
+                <span>
+                    {{__('Crawl other pages')}}
+                </span>
+            </label>
+
+        </div>
+
 
     </x-ui.field>
 

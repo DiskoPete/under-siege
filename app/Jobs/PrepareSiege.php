@@ -39,6 +39,10 @@ class PrepareSiege implements ShouldQueue
     public function handle()
     {
 
+        if (!$this->siege->configuration->crawl) {
+            return;
+        }
+
         $this->markSiegeAsPreparing();
 
         $observer   = $this->makeCrawlObserver();
