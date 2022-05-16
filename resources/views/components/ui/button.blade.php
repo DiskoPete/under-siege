@@ -12,11 +12,14 @@ if ($href) {
 <<?= $tag ?>
     {{$attributes->merge()}}
     class="
-        inline-block border-2 border-primary-500
-        px-7 py-1
+        inline-block
+        px-7 py-2
         font-bold bg-primary-500 text-white
-        rounded-full
+        rounded
         text-lg
+        hover:bg-primary-600
+
+        transition-colors
     "
     @if($href)href="{{$href}}"@endif
 >
