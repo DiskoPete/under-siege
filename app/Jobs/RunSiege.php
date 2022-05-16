@@ -115,7 +115,11 @@ class RunSiege implements ShouldQueue
 
     private function createLogsFile(): void
     {
-        $path                    = "sieges/logs/" . $this->siege->uuid;
+        $directory               = "sieges/logs";
+        $path                    = "$directory/" . $this->siege->uuid;
+
+        Storage::makeDirectory($directory);
+
         $this->filePaths['logs'] = Storage::path($path);
 
     }
