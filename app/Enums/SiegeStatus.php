@@ -20,4 +20,12 @@ enum SiegeStatus: int
             default => 'fas-check'
         };
     }
+
+    public function getDisplayName(): string
+    {
+        return match($this){
+            SiegeStatus::InProgress => 'In Progress',
+            default => $this->name
+        };
+    }
 }

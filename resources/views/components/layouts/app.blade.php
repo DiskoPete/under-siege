@@ -20,7 +20,7 @@
     <div class="flex flex-col min-h-screen">
 
         <header class="
-            bg-white border-b border-b-gray-100 shadow-sm
+            bg-white border-b-2 border-b-primary-500 shadow-sm
             px-3 md:px-5 py-3
             flex justify-between items-center
             ">

@@ -8,7 +8,8 @@ $initialConcurrentUsers = $siege?->configuration->concurrent ?: 25;
 @endphp
 <form
     method="post" action="{{route('sieges.create')}}"
-      class="space-y-4"
+  class="space-y-4"
+    {{$attributes->merge()}}
 >
     @csrf
     <x-ui.field>
