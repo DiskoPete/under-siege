@@ -1,0 +1,14 @@
+import:
+  - ./deployment.php
+
+config:
+  http_user: 'www-data'
+  repository: 'https://github.com/DiskoPete/under-siege'
+
+hosts:
+  undersiege.dev:
+    remote_user: root
+    deploy_path: '/var/www/html'
+
+after:
+  deploy:failed: deploy:unlock
