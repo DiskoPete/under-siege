@@ -145,7 +145,7 @@
                             {{$siege->status->getDisplayName()}} ...
                         </div>
                     @endif
-                    <p class="text-center">If this tool servers your purpose,<br>please do consider to <a
+                    <p class="text-center">If this tool serves your purpose,<br>please do consider to <a
                             href="{{config('support.buy_me_a_coffee_url')}}" target="_blank"
                             class="text-primary-500">buy me a coffee</a>! ☕️</p>
                 </x-ui.panel>
