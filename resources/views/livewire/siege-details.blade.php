@@ -161,7 +161,7 @@
 
 
         @if($siege->isComplete() || $siege->status == \App\Enums\SiegeStatus::Failed)
-            <x-ui.button type="button" @click="showForm = true">{{__('Rerun siege')}}</x-ui.button>
+            <x-ui.button type="button" @click="showForm = true">{{__('Reuse configuration')}}</x-ui.button>
         @endif
     </x-ui.panel>
 
