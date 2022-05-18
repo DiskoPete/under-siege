@@ -70,18 +70,17 @@ class RunSiege implements ShouldQueue
             return null;
         }
 
-        return sprintf(
-            '--header="%s"',
-            collect($headers)
-                ->map(fn(string $value, string $name) => "$name: $value")
-                ->join(',')
-        );
+        return collect($headers)
+            ->map(fn(string $value, string $name) => "$name: $value")
+            ->map(fn(string $value) => "--header=\"$value\"")
+            ->join(' ');
     }
 
     private function exec(): Result
     {
         $headers = $this->makeHeadersOption();
-        $command = "siege --no-parser -ij -d5 -c{$this->siege->configuration->concurrent} -t{$this->siege->configuration->duration}S --file={$this->filePaths['urls']} --log={$this->filePaths['logs']} $headers";
+        $userAgent = config('siege.user_agent');
+        $command = "siege --user-agent=\"$userAgent\" --no-parser -ij -d5 -c{$this->siege->configuration->concurrent} -t{$this->siege->configuration->duration}S --file={$this->filePaths['urls']} --log={$this->filePaths['logs']} $headers";
 
         exec($command, $output);
 
