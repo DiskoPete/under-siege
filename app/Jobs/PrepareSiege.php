@@ -45,20 +45,15 @@ class PrepareSiege implements ShouldQueue
 
         $this->markSiegeAsPreparing();
 
-        $observer   = $this->makeCrawlObserver();
-        $crawlQueue = new ArrayCrawlQueue();
-        $deadline   = now()->addSeconds($this->timeout - 10);
-
+        $observer        = $this->makeCrawlObserver();
+        $crawlQueue      = new ArrayCrawlQueue();
+        $deadline        = now()->addSeconds($this->timeout - 10);
         $totalCrawlLimit = 100;
-        $started         = false;
 
-        while (now() < $deadline && (!$started || $crawlQueue->hasPendingUrls())) {
-
-            $started = true;
-
+        do {
             Crawler::create([
                 RequestOptions::ALLOW_REDIRECTS => true,
-                RequestOptions::HEADERS => $this->siege->configuration->headers ?? []
+                RequestOptions::HEADERS         => $this->siege->configuration->headers ?? []
             ])
                 ->setCrawlQueue($crawlQueue)
                 ->setCrawlObserver($observer)
@@ -66,7 +61,7 @@ class PrepareSiege implements ShouldQueue
                 ->setCurrentCrawlLimit(15)
                 ->setCrawlProfile(new CrawlInternalUrls($this->siege->configuration->target))
                 ->startCrawling($crawlQueue->getPendingUrl()?->url ?: $this->siege->configuration->target);
-        }
+        } while (now() < $deadline && $crawlQueue->hasPendingUrls());
 
         $this->saveCrawledUrls($observer);
 
