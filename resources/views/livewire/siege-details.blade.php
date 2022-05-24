@@ -26,14 +26,17 @@
             <div class="space-y-3">
                 <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
                     <div>{{__('Target')}}</div>
-                    <div class="overflow-hidden text-ellipsis"><a href="{{$siege->configuration->target}}"
-                                                                  target="_blank"
-                                                                  class="text-primary-500">{{$siege->configuration->target}}</a>
+                    <div class="overflow-hidden text-ellipsis">
+                        <a href="{{$siege->configuration->target}}"
+                          target="_blank"
+                          class="text-primary-500">{{$siege->configuration->target}}</a>
                     </div>
                     <div>{{__('Duration')}}</div>
                     <div>{{$siege->configuration->duration}} s</div>
                     <div>{{__('Concurrent Users')}}</div>
                     <div>{{$siege->configuration->concurrent}} Users</div>
+                    <div>{{__('Intensity')}}</div>
+                    <div>{{$siege->configuration->intensity}}</div>
                 </div>
 
                 @if($siege->configuration->headers)

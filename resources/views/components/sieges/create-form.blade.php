@@ -74,6 +74,24 @@
 
     <x-ui.field>
         @slot('label')
+            {{__('Intensity')}}
+        @endslot
+
+            <input
+                class="w-full"
+                type="range"
+                name="{{\App\Support\SiegeConfiguration::KEY_INTENSITY}}"
+                min="0"
+                max="1"
+                step=".01"
+                value="{{$siege?->configuration->intensity ?: .5}}"
+                required
+            >
+
+    </x-ui.field>
+
+    <x-ui.field>
+        @slot('label')
             {{__('Request Headers')}}
         @endslot
 

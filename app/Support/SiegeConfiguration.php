@@ -6,6 +6,7 @@ use Illuminate\Support\Fluent;
 
 /**
  * @property bool|null $crawl
+ * @property float|null $intensity
  * @property string|null $target
  * @property int|null $duration
  * @property int|null $concurrent
@@ -15,4 +16,5 @@ use Illuminate\Support\Fluent;
 class SiegeConfiguration extends Fluent
 {
     const KEY_CRAWL = 'crawl';
+    const KEY_INTENSITY = 'intensity';
 }

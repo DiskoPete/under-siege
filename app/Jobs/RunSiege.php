@@ -39,7 +39,7 @@ class RunSiege implements ShouldQueue
 
         try {
             $this->siege->started_at = now();
-            $this->siege->status = SiegeStatus::InProgress;
+            $this->siege->status     = SiegeStatus::InProgress;
             $this->siege->save();
 
             $this->writeUrlsFile();
@@ -78,9 +78,10 @@ class RunSiege implements ShouldQueue
 
     private function exec(): Result
     {
-        $headers = $this->makeHeadersOption();
+        $headers   = $this->makeHeadersOption();
         $userAgent = config('siege.user_agent');
-        $command = "siege --user-agent=\"$userAgent\" --no-parser -ij -d5 -c{$this->siege->configuration->concurrent} -t{$this->siege->configuration->duration}S --file={$this->filePaths['urls']} --log={$this->filePaths['logs']} $headers";
+        $delay     = $this->getDelayOption();
+        $command   = "siege --user-agent=\"$userAgent\" --no-parser -ij $delay -c{$this->siege->configuration->concurrent} -t{$this->siege->configuration->duration}S --file={$this->filePaths['urls']} --log={$this->filePaths['logs']} $headers";
 
         exec($command, $output);
 
@@ -114,8 +115,8 @@ class RunSiege implements ShouldQueue
 
     private function createLogsFile(): void
     {
-        $directory               = "sieges/logs";
-        $path                    = "$directory/" . $this->siege->uuid;
+        $directory = "sieges/logs";
+        $path      = "$directory/" . $this->siege->uuid;
 
         Storage::makeDirectory($directory);
 
@@ -132,5 +133,13 @@ class RunSiege implements ShouldQueue
 
             unlink($filePath);
         }
+    }
+
+    private function getDelayOption(): string
+    {
+        $maxDelay = 10;
+        $delay    = $maxDelay * (1 - $this->siege->configuration->intensity ?? .5);
+
+        return "-d$delay";
     }
 }
