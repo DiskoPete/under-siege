@@ -49,6 +49,7 @@
             <div class="flex gap-4">
                 <a href="{{config('vcs.roadmap_url')}}">Roadmap</a>
                 <a href="{{config('support.buy_me_a_coffee_url')}}">{{__('Buy me a coffee')}}</a>
+                <a href="{{route('stats')}}">{{__('Statistics')}}</a>
                 <a href="{{route('imprint')}}">{{__('Imprint')}}</a>
             </div>
         </footer>
