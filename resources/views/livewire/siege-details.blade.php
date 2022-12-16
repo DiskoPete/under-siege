@@ -20,41 +20,51 @@
     </x-ui.panel>
 
     <div class="grid grid-cols-1 md:grid-cols-5 gap-5 md:gap-8">
-        <x-ui.panel class="md:col-span-2">
-            <h2 class="font-bold text-xl mb-3">Configuration</h2>
 
-            <div class="space-y-3">
-                <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
-                    <div>{{__('Target')}}</div>
-                    <div class="overflow-hidden text-ellipsis">
-                        <a href="{{$siege->configuration->target}}"
-                          target="_blank"
-                          class="text-primary-500">{{$siege->configuration->target}}</a>
-                    </div>
-                    <div>{{__('Duration')}}</div>
-                    <div>{{$siege->configuration->duration}} s</div>
-                    <div>{{__('Concurrent Users')}}</div>
-                    <div>{{$siege->configuration->concurrent}} Users</div>
-                    <div>{{__('Intensity')}}</div>
-                    <div>{{$siege->configuration->intensity}}</div>
-                </div>
+        <div class="md:col-span-2">
+            <div class="md:sticky top-5 space-y-3">
+                <x-ui.panel>
+                    <h2 class="font-bold text-xl mb-3">Configuration</h2>
 
-                @if($siege->configuration->headers)
-                    <div class="space-y-2">
-                        <h3 class="font-bold">Headers</h3>
-                        <div class="grid grid-cols-[auto_1fr] gap-2">
-                            @foreach($siege->configuration->headers as $name => $value)
-                                <input value="{{$name}}" class="text-input grow-0 w-min" readonly>
-                                <input value="{{$value}}" class="text-input" readonly>
-                            @endforeach
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+                            <div>{{__('Target')}}</div>
+                            <div class="overflow-hidden text-ellipsis">
+                                <a href="{{$siege->configuration->target}}"
+                                   target="_blank"
+                                   class="text-primary-500">{{$siege->configuration->target}}</a>
+                            </div>
+                            <div>{{__('Duration')}}</div>
+                            <div>{{$siege->configuration->duration}} s</div>
+                            <div>{{__('Concurrent Users')}}</div>
+                            <div>{{$siege->configuration->concurrent}} Users</div>
+                            <div>{{__('Intensity')}}</div>
+                            <div>{{$siege->configuration->intensity}}</div>
                         </div>
-                    </div>
 
-                @endif
+                        @if($siege->configuration->headers)
+                            <div class="space-y-2">
+                                <h3 class="font-bold">Headers</h3>
+                                <div class="grid grid-cols-[auto_1fr] gap-2">
+                                    @foreach($siege->configuration->headers as $name => $value)
+                                        <input value="{{$name}}" class="text-input grow-0 w-min" readonly>
+                                        <input value="{{$value}}" class="text-input" readonly>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                        @endif
+                    </div>
+                </x-ui.panel>
+
+                <x-recent-sieges class="hidden md:block" :active-siege="$siege" />
             </div>
 
 
-        </x-ui.panel>
+
+        </div>
+
+
 
         <div class="md:col-span-3  space-y-3">
             <h3 class="font-bold text-2xl">Results</h3>
@@ -154,26 +164,29 @@
                 </x-ui.panel>
 
             @endif
+
+            <x-ui.panel class="flex items-center justify-between">
+
+                <a href="{{config('support.buy_me_a_coffee_url')}}" target="_blank"
+                   class="underline underline-offset-1">{{__('Buy me a coffee')}}</a>
+
+
+                @if($siege->isComplete() || $siege->status == \App\Enums\SiegeStatus::Failed)
+                    <x-ui.button type="button" @click="showForm = true">{{__('Reuse configuration')}}</x-ui.button>
+                @endif
+            </x-ui.panel>
+
+            @if($siege->isComplete())
+                <x-ui.panel x-cloak x-show="showForm" x-effect="showForm && $nextTick(() => $el.scrollIntoView({behavior: 'smooth', block: 'end'}))">
+                    <x-sieges.create-form :siege="$siege" />
+                </x-ui.panel>
+            @endif
+
+            <x-recent-sieges class="md:hidden" :active-siege="$siege" />
+
+
         </div>
     </div>
-
-    <x-ui.panel class="flex items-center justify-between">
-
-        <a href="{{config('support.buy_me_a_coffee_url')}}" target="_blank"
-           class="underline underline-offset-1">{{__('Buy me a coffee')}}</a>
-
-
-        @if($siege->isComplete() || $siege->status == \App\Enums\SiegeStatus::Failed)
-            <x-ui.button type="button" @click="showForm = true">{{__('Reuse configuration')}}</x-ui.button>
-        @endif
-    </x-ui.panel>
-
-    @if($siege->isComplete())
-        <x-ui.panel x-cloak x-show="showForm" x-effect="showForm && $nextTick(() => $el.scrollIntoView({behavior: 'smooth', block: 'end'}))">
-            <x-sieges.create-form :siege="$siege" />
-        </x-ui.panel>
-
-    @endif
 
     <script>
         document.addEventListener('alpine:init', () => {
